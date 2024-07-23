@@ -1,0 +1,83 @@
+import random
+import tkinter as tk
+
+root = tk.Tk()
+root.geometry("400x400")
+root.title("Rock Paper Scissors Game")
+
+
+computeroptions = {
+    "0": "Rock",
+    "1": "Paper",
+    "2": "Scissors"
+}
+
+def reset_game():
+    b1["state"] = "active"
+    b2["state"] = "active"
+    b3["state"] = "active"
+    l1.config(text="Player")
+    l3.config(text="Computer")
+    l4.config(text="")
+    
+def button_disable():
+    b1["state"] = "disabled"
+    b2["state"] = "disabled"
+    b3["state"] = "disabled"
+
+def determine_winner(player_choice):
+    # Get computer's choice
+    computer_choice = computeroptions[str(random.randint(0, 2))]
+    
+    # Determine the result
+    if computer_choice == player_choice:
+        matchresult = "Tie!"
+    elif (computer_choice == "Rock" and player_choice == "Scissors") or \
+         (computer_choice == "Paper" and player_choice == "Rock") or \
+         (computer_choice == "Scissors" and player_choice == "Paper"):
+        matchresult = "Computer Wins"
+    else:
+        matchresult = "Player Wins"
+    
+    # Update labels and disable buttons
+    l4.config(text=matchresult)
+    l1.config(text=player_choice)
+    l3.config(text=computer_choice)
+    button_disable()
+
+def player_rock():
+    determine_winner("Rock")
+
+def player_paper():
+    determine_winner("Paper")
+
+def player_scissors():
+    determine_winner("Scissors")
+tk.Label(root, text='Choose any one: Rock, Paper, Scissors', font="Consolas", fg="blue").pack(pady=20)
+
+frame = tk.Frame(root)
+frame.pack()
+
+l1 = tk.Label(frame, text="Player", font=10)
+l2 = tk.Label(frame, text="VS", font="Consolas")
+l3 = tk.Label(frame, text="Computer", font=10)
+l1.pack(side='left')
+l2.pack(side='left')
+l3.pack()
+
+l4 = tk.Label(root, text="", font="Consolas", bg="white", width=15, borderwidth=2, relief="solid")
+l4.pack(pady=20)
+
+frame1 = tk.Frame(root)
+frame1.pack()
+
+b1 = tk.Button(frame1, text="Rock", font=8, width=7, bg="light blue", command=player_rock)
+b2 = tk.Button(frame1, text="Paper", font=8, width=7, bg="light blue", command=player_paper)
+b3 = tk.Button(frame1, text="Scissors", font=8, width=7, bg="light blue", command=player_scissors)
+b1.pack(side='left', padx=10)
+b2.pack(side='left', padx=10)
+b3.pack(padx=10)
+
+tk.Button(root, text="Reset Game", font=10, fg="red", bg="light grey", command=reset_game).pack(pady=20)
+
+root.mainloop()
